@@ -11,6 +11,8 @@ variable "identity" {}
 resource "aws_instance" "web" {
   # ... Meta parameters -- Available for all terrafrom code 
   #Amazom machine id AMI
+  count = 3
+
   ami = "${var.ami}"
 
   instance_type = "${var.instance_type}"
@@ -24,7 +26,7 @@ resource "aws_instance" "web" {
   # get from access_key.tf file
   key_name = "${aws_key_pair.training.key_name}"
 
-  connection  {
+  connection {
     user        = "ubuntu"
     private_key = "${file("~/.ssh/id_rsa")}"
   }
@@ -51,9 +53,9 @@ resource "aws_instance" "web" {
 }
 
 output "public_ip" {
-  value = "${aws_instance.web.public_ip}"
+  value = ["${aws_instance.web.*.public_ip}"]
 }
 
 output "public_dns" {
-  value = "${aws_instance.web.public_dns}"
+  value = ["${aws_instance.web.*.public_dns}"]
 }

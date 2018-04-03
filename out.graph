@@ -1,0 +1,38 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] module.server.aws_instance.web" [label = "module.server.aws_instance.web", shape = "box"]
+		"[root] module.server.aws_key_pair.training" [label = "module.server.aws_key_pair.training", shape = "box"]
+		"[root] provider.aws" [label = "provider.aws", shape = "diamond"]
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] output.public_dns"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] output.public_ip"
+		"[root] module.server.aws_instance.web" -> "[root] module.server.aws_key_pair.training"
+		"[root] module.server.aws_instance.web" -> "[root] module.server.var.ami"
+		"[root] module.server.aws_instance.web" -> "[root] module.server.var.instance_type"
+		"[root] module.server.aws_instance.web" -> "[root] module.server.var.subnet_id"
+		"[root] module.server.aws_instance.web" -> "[root] module.server.var.vpc_security_group_id"
+		"[root] module.server.aws_key_pair.training" -> "[root] module.server.var.identity"
+		"[root] module.server.aws_key_pair.training" -> "[root] provider.aws"
+		"[root] module.server.output.public_dns" -> "[root] module.server.aws_instance.web"
+		"[root] module.server.output.public_ip" -> "[root] module.server.aws_instance.web"
+		"[root] module.server.var.ami" -> "[root] var.ami"
+		"[root] module.server.var.identity" -> "[root] var.identity"
+		"[root] module.server.var.instance_type" -> "[root] var.instance_type"
+		"[root] module.server.var.subnet_id" -> "[root] var.subnet_id"
+		"[root] module.server.var.vpc_security_group_id" -> "[root] var.vpc_security_group_id"
+		"[root] output.public_dns" -> "[root] module.server.output.public_dns"
+		"[root] output.public_ip" -> "[root] module.server.output.public_ip"
+		"[root] provider.aws (close)" -> "[root] module.server.aws_instance.web"
+		"[root] provider.aws" -> "[root] var.access_key"
+		"[root] provider.aws" -> "[root] var.region"
+		"[root] provider.aws" -> "[root] var.secret_key"
+		"[root] provisioner.file (close)" -> "[root] module.server.aws_instance.web"
+		"[root] provisioner.remote-exec (close)" -> "[root] module.server.aws_instance.web"
+		"[root] root" -> "[root] meta.count-boundary (count boundary fixup)"
+		"[root] root" -> "[root] provider.aws (close)"
+		"[root] root" -> "[root] provisioner.file (close)"
+		"[root] root" -> "[root] provisioner.remote-exec (close)"
+	}
+}
+
