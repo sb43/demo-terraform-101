@@ -21,6 +21,25 @@ resource "aws_instance" "web" {
   # firewall 
   vpc_security_group_ids = ["${var.vpc_security_group_id}"]
 
+  # get from access_key.tf file
+  key_name = "${aws_key_pair.training.key_name}"
+
+  connection  {
+    user        = "ubuntu"
+    private_key = "${file("~/.ssh/id_rsa")}"
+  }
+
+  provisioner "file" {
+    source      = "assets"
+    destination = "/tmp/"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo sh /tmp/assets/setup-web.sh",
+    ]
+  }
+
   tags {
     "Identity" = "${var.identity}"
     "Name"     = "Shriram"

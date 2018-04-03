@@ -61,11 +61,12 @@ module "server" {
 
   #network access
   subnet_id = "${var.subnet_id}"
-
+  
   # firewall 
   vpc_security_group_id = "${var.vpc_security_group_id}"
 
   identity = "${var.identity}"
+  
 }
 
 output "public_ip" {
